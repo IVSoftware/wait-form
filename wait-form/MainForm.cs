@@ -41,7 +41,8 @@ namespace wait_form
             BackColor = Color.LightBlue;
             UseWaitCursor = true;
             StartPosition = FormStartPosition.Manual;
-            Location = PointToClient(Owner.PointToScreen(Owner.ClientRectangle.Location));
+            Location = PointToClient(
+                Owner.PointToScreen(Owner.ClientRectangle.Location));
             var forceHandle = Handle;
             BeginInvoke(() => ShowDialog());
             Opacity = .5;

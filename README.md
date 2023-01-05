@@ -32,23 +32,23 @@ One of many ways to show a **Winform waiting panel** is to run the `LoadData` me
         public WaitFormWaitingPanel(Form owner)
         {
             Owner = owner;
-            StartPosition = FormStartPosition.CenterParent;
-            var forceHandle = Handle;
             var label = new Label
             {
                 Text = "Loading...",
-                Size = new Size(Owner.ClientRectangle.Width, Owner.ClientRectangle.Height),
-                TextAlign = ContentAlignment.MiddleCenter
+                TextAlign = ContentAlignment.MiddleCenter,
+                Size = Owner.ClientRectangle.Size,
             };
             Controls.Add(label);
-            Size = new Size(label.Width + 20, label.Height + 20);
+            Size = Owner.ClientRectangle.Size;
             FormBorderStyle = FormBorderStyle.None;
             BackColor = Color.LightBlue;
             UseWaitCursor = true;
+            StartPosition = FormStartPosition.Manual;
+            Location = PointToClient(Owner.PointToScreen(Owner.ClientRectangle.Location));
+            var forceHandle = Handle;
             BeginInvoke(() => ShowDialog());
             Opacity = .5;
         }
     }
-
 
   [1]: https://i.stack.imgur.com/dbn0z.png
