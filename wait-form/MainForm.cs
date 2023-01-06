@@ -12,7 +12,7 @@ namespace wait_form
 
         private async void onClickLoadData(object? sender, EventArgs e)
         {
-            using (var waitForm = new WaitFormWaitingPanel(this))
+            using (var waitForm = new WinFormWaitingPanel(this))
             {
                 await Task.Run(() => LoadData());
             }
@@ -24,28 +24,35 @@ namespace wait_form
             Thread.Sleep(TimeSpan.FromSeconds(1));
         }
     }
-    class WaitFormWaitingPanel : Form
+    class WinFormWaitingPanel : Form
     {
-        public WaitFormWaitingPanel(Form owner)
-        {
+        public WinFormWaitingPanel(Form owner)
+        {            
             Owner = owner;
-            var label = new Label
-            {
-                Text = "Loading...",
-                TextAlign = ContentAlignment.MiddleCenter,
-                Size = Owner.ClientRectangle.Size,
-            };
-            Controls.Add(label);
+
+            // Size this form to cover the main form's client rectangle.
             Size = Owner.ClientRectangle.Size;
             FormBorderStyle = FormBorderStyle.None;
-            BackColor = Color.LightBlue;
             UseWaitCursor = true;
             StartPosition = FormStartPosition.Manual;
             Location = PointToClient(
                 Owner.PointToScreen(Owner.ClientRectangle.Location));
+
+            // Add a label that says "Loading..."
+            var label = new Label
+            {
+                Text = "Loading...",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Fill,
+            };
+            Controls.Add(label);
+
+            // Set the form color to see-through Blue
+            BackColor = Color.LightBlue;
+            Opacity = .5;
+
             var forceHandle = Handle;
             BeginInvoke(() => ShowDialog());
-            Opacity = .5;
         }
     }
 }
